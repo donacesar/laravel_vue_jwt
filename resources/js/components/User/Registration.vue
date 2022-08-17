@@ -19,6 +19,9 @@ export default {
             password_confirmation: null,
         }
     },
+    mounted() {
+
+    },
     methods: {
         store() {
             axios.post('/api/users', {
