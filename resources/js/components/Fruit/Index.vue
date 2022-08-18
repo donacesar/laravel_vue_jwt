@@ -21,11 +21,12 @@
 </template>
 
 <script>
+import api from "../../api";
 export default {
     name: "Index",
     data() {
         return {
-            fruits: null
+            fruits: null,
         }
     },
     mounted() {
@@ -33,11 +34,11 @@ export default {
     },
     methods: {
         getFruits() {
-            axios.get('/api/fruits')
-            .then(res => {
-                this.fruits = res.data.data
-            })
-        }
+            api.get('/api/auth/fruits')
+                .then(res => {
+                    this.fruits = res.data.data
+                })
+        },
     }
 
 }
