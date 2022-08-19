@@ -5326,7 +5326,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "Index"
+  name: "Index",
+  data: function data() {
+    return {
+      accessToken: null
+    };
+  },
+  mounted: function mounted() {
+    this.getAccessToken();
+  },
+  updated: function updated() {
+    this.getAccessToken();
+  },
+  methods: {
+    getAccessToken: function getAccessToken() {
+      this.accessToken = localStorage.getItem('access_token');
+    }
+  }
 });
 
 /***/ }),
@@ -5410,7 +5426,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
+var route = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
   routes: [{
     path: '/fruits',
@@ -5436,8 +5452,37 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vue_router__WEBPACK_IMPORTED_MOD
       return __webpack_require__.e(/*! import() */ "resources_js_components_User_Personal_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/User/Personal */ "./resources/js/components/User/Personal.vue"));
     },
     name: 'user.personal'
+  }, {
+    path: '*',
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ "resources_js_components_User_Personal_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/User/Personal */ "./resources/js/components/User/Personal.vue"));
+    },
+    name: '404'
   }]
-}));
+});
+route.beforeEach(function (to, from, next) {
+  var accessToken = localStorage.getItem('access_token');
+
+  if (!accessToken) {
+    if (to.name !== 'user.login' || to.name !== 'user.registration') {
+      return next();
+    } else {
+      return next({
+        name: 'user.login'
+      });
+    }
+  } //     if (to.name !== 'user.login' || to.name !== 'user.registration') {
+  //         if(!accessToken) {
+  //             return next({
+  //                 name: 'user.login'
+  //             })
+  //         }
+  //     }
+
+
+  next();
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (route);
 
 /***/ }),
 
@@ -28183,21 +28228,29 @@ var render = function () {
   return _c(
     "div",
     [
-      _c("router-link", { attrs: { to: { name: "fruit.index" } } }, [
-        _vm._v("List"),
-      ]),
+      _vm.accessToken
+        ? _c("router-link", { attrs: { to: { name: "fruit.index" } } }, [
+            _vm._v("List"),
+          ])
+        : _vm._e(),
       _vm._v(" "),
-      _c("router-link", { attrs: { to: { name: "user.login" } } }, [
-        _vm._v("Login"),
-      ]),
+      !_vm.accessToken
+        ? _c("router-link", { attrs: { to: { name: "user.login" } } }, [
+            _vm._v("Login"),
+          ])
+        : _vm._e(),
       _vm._v(" "),
-      _c("router-link", { attrs: { to: { name: "user.registration" } } }, [
-        _vm._v("Registration"),
-      ]),
+      !_vm.accessToken
+        ? _c("router-link", { attrs: { to: { name: "user.registration" } } }, [
+            _vm._v("Registration"),
+          ])
+        : _vm._e(),
       _vm._v(" "),
-      _c("router-link", { attrs: { to: { name: "user.personal" } } }, [
-        _vm._v("Personal"),
-      ]),
+      _vm.accessToken
+        ? _c("router-link", { attrs: { to: { name: "user.personal" } } }, [
+            _vm._v("Personal"),
+          ])
+        : _vm._e(),
       _vm._v(" "),
       _c("router-view"),
     ],
