@@ -29,11 +29,11 @@ const route = new VueRouter({
     ]
 })
 
-route.beforeEach((to,from,next) =>{
+route.beforeEach((to, from, next) => {
 
     const accessToken = localStorage.getItem('access_token')
 
-    if(!accessToken){
+    if (!accessToken) {
         if (to.name !== 'user.login' || to.name !== 'user.registration') {
             return next()
         } else {
@@ -43,13 +43,13 @@ route.beforeEach((to,from,next) =>{
         }
     }
 
-//     if (to.name !== 'user.login' || to.name !== 'user.registration') {
-//         if(!accessToken) {
-//             return next({
-//                 name: 'user.login'
-//             })
-//         }
-//     }
+    if (to.name === 'user.login' || to.name === 'user.registration' && accessToken) {
+
+        return next({
+            name: 'user.login'
+        })
+
+    }
 
     next()
 
